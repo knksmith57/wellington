@@ -53,6 +53,10 @@ func Error(err error) UnionSassValue {
 	return C.sass_make_error(C.CString(err.Error()))
 }
 
+func Warning(err error) UnionSassValue {
+	return C.sass_make_warning(C.CString(err.Error()))
+}
+
 // RegisterHandler sets the passed signature and callback to the
 // handlers array.
 func RegisterHandler(sign string,

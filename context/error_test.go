@@ -2,6 +2,7 @@ package context
 
 import (
 	"bytes"
+	"fmt"
 
 	"testing"
 )
@@ -130,14 +131,38 @@ Backtrace:
 	}
 }
 
-func TestErrorWarn(t *testing.T) {
-	// Disabled while new warn integration is built
-	// in := bytes.NewBufferString(`
-	// @warn "WARNING";`)
-	// 	out := bytes.NewBuffer([]byte(""))
-	// 	ctx := Context{}
-	// 	err := ctx.Compile(in, out)
-	// 	_ = err
+func TestWarning(t *testing.T) {
+	in := bytes.NewBufferString(`$war: foowarn();`)
+	ctx := NewContext()
+	ctx.Cookies = make([]Cookie, 1)
+
+	ctx.Cookies[0] = Cookie{
+		"foowarn()",
+		func(ctx *Context, usv UnionSassValue) UnionSassValue {
+			return Warning(fmt.Errorf("!!!"))
+		},
+		ctx,
+	}
+	var out bytes.Buffer
+	err := ctx.Compile(in, &out)
+	if err == nil {
+		t.Error("No warning thrown")
+	}
+
+	e := `stdin:1
+WARNING: C function foowarn: !!!
+Backtrace:
+	stdin:1, in function ` + "`foowarn`" + `
+	stdin:1`
+	if e != err.Error() {
+		t.Errorf("got:\n~%s~\nwanted:\n~%s~", err, e)
+	}
+
+	// Warnings are not showing up in the output
+	if e != out.String() {
+		t.Errorf("got:\n%s\nwanted:\n%s", out.String(), e)
+	}
+
 }
 
 func TestErrorInvalid(t *testing.T) {
