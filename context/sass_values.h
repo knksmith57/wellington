@@ -45,6 +45,7 @@ bool sass_value_is_color (union Sass_Value* v);
 bool sass_value_is_list (union Sass_Value* v);
 bool sass_value_is_map (union Sass_Value* v);
 bool sass_value_is_error (union Sass_Value* v);
+bool sass_value_is_warning (union Sass_Value* v);
 
 // Getters and setters for Sass_Number
 double sass_number_get_value (union Sass_Value* v);
