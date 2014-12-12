@@ -152,4 +152,8 @@ func main() {
 		//fmt.Println(PartialMap.M["/Users/dslininger/Projects/RetailMeNot/www/gui/sass/bourbon/css3/_hyphens.scss"])
 		wt.FileWatch(partialMap, &globalBuildArgs, &topLevelFilePaths)
 	}
+	defer func() {
+		fmt.Println("Cache hit", wt.Count)
+		fmt.Println("Cache miss", wt.Miss)
+	}()
 }
