@@ -6,6 +6,8 @@ package context
 
 // #cgo LDFLAGS: -lsass -lstdc++ -lm
 // #cgo CFLAGS:
+
+// #cgo pkg-config: libsass
 //
 // #include "sass_context.h"
 import "C"
