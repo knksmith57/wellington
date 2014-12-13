@@ -132,7 +132,10 @@ Backtrace:
 }
 
 func TestWarning(t *testing.T) {
-	in := bytes.NewBufferString(`$war: foo();`)
+	in := bytes.NewBufferString(`$war: foo();
+div {
+  color: blue;
+}`)
 	ctx := NewContext()
 	ctx.Cookies = make([]Cookie, 1)
 
@@ -157,7 +160,6 @@ Backtrace:
 	if e != err.Error() {
 		t.Errorf("got:\n%s\nwanted:\n%s", err, e)
 	}
-	fmt.Println("Warning output\n", out.String())
 	// Warnings are not showing up in the output, this could be an issue
 	if e != out.String() {
 		t.Errorf("got:\n%s\nwanted:\n%s", out.String(), e)
