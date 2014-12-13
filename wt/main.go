@@ -155,5 +155,7 @@ func main() {
 	defer func() {
 		fmt.Println("Cache hit", wt.Count)
 		fmt.Println("Cache miss", wt.Miss)
+		fmt.Println("Imports   ", wt.ImportOnce)
+		fmt.Println("Duplicates", wt.ImportRest)
 	}()
 }

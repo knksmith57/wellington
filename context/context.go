@@ -164,7 +164,7 @@ func (ctx *Context) Compile(in io.Reader, out io.Writer) error {
 	}
 	src := C.CString(string(bs))
 	defer C.free(unsafe.Pointer(src))
-
+	ioutil.WriteFile("test.scss", bs, 0777)
 	dc := C.sass_make_data_context(src)
 	defer C.sass_delete_data_context(dc)
 

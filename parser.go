@@ -41,7 +41,8 @@ var weAreNeverGettingBackTogether = []byte(`
   $file: sprite-file($map, $name);
   height: image-height($file);
   width: image-width($file);
-}`)
+}
+`)
 
 func init() {
 	log.SetFlags(log.Lshortfile | log.Ldate | log.Ltime)
@@ -65,6 +66,8 @@ type Parser struct {
 	Output   []byte
 	Line     map[int]string
 	LineKeys []int
+	// Set of imported paths
+	Paths []string
 }
 
 func NewParser() *Parser {
@@ -374,7 +377,7 @@ func LoadAndBuild(sassFile string, globalBuildArgs *BuildArgs, partialMap *SafeP
 	if strings.HasPrefix(filepath.Base(sassFile), "_") {
 		return
 	}
-	// log.Println("Open:", f)
+	log.Println("Open:", sassFile)
 	//Add directly of top level file
 	*topLevelFilePaths = append(*topLevelFilePaths, filepath.Dir(sassFile))
 	// If no imagedir specified, assume relative to the input file
