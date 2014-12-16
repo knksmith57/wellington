@@ -15,7 +15,7 @@ test -z "$(gofmt -l -w .     | tee /dev/stderr)"
 test -z "$(goimports -l -w . | tee /dev/stderr)"
 #test -z "$(golint .          | tee /dev/stderr)"
 go vet ./...
-go test -race ./...
+go test -race ./... -ldflags="-extldflags '-static'" ./...
 
 # Run test coverage on each subdirectories and merge the coverage profile.
 
@@ -25,7 +25,7 @@ echo "mode: count" > profile.cov
 for dir in $(find . -maxdepth 10 -not -path './.git*' -not -path '*/_*' -type d);
 do
 if ls $dir/*.go &> /dev/null; then
-    go test -covermode=count -coverprofile=$dir/profile.tmp $dir
+    go test -ldflags="-extldflags '-static'" ./... -covermode=count -coverprofile=$dir/profile.tmp $dir
     if [ -f $dir/profile.tmp ]
     then
         cat $dir/profile.tmp | tail -n +2 >> profile.cov

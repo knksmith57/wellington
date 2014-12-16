@@ -25,7 +25,7 @@ build:
     - script:
         name: go test
         code: |
-          go test ./...
+          go test -ldflags="-extldflags '-static'" ./...
     - script:
         name: Coveralls.io
         code: |
